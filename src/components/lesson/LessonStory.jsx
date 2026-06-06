@@ -40,6 +40,69 @@ export function StoryFlow({ steps }) {
   )
 }
 
+export function LessonDeepDive({ sections }) {
+  if (!sections?.length) return null
+
+  return (
+    <div className="my-8">
+      <div className="mb-3">
+        <p className="text-xs font-bold uppercase tracking-widest text-cyan-300">Deep knowledge</p>
+        <p className="text-sm opacity-60 mt-1">Open the parts you want to study in more detail.</p>
+      </div>
+      <div className="space-y-3">
+        {sections.map((section, i) => (
+          <motion.details
+            key={section.title}
+            className="group rounded-2xl border border-white/10 bg-white/[0.03] overflow-hidden"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-40px' }}
+            transition={{ delay: i * 0.06, duration: 0.35 }}
+          >
+            <summary className="flex cursor-pointer list-none items-center gap-3 px-4 py-3">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-cyan-500/15 text-xs font-black text-cyan-300">
+                {i + 1}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-bold">{section.title}</span>
+                {section.summary && <span className="block text-xs opacity-55 mt-0.5">{section.summary}</span>}
+              </span>
+              <span className="text-lg text-cyan-300 transition-transform group-open:rotate-45">+</span>
+            </summary>
+            <div className="border-t border-white/10 px-4 pb-4 pt-3">
+              {Boolean(section.points?.length) && (
+                <ul className="space-y-2">
+                  {section.points.map((point) => (
+                    <li key={point} className="flex gap-2 text-sm leading-relaxed opacity-75">
+                      <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-cyan-400" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              {section.code && (
+                <pre className="mt-4 overflow-x-auto rounded-xl border border-white/10 bg-[#0d1117] p-3 text-xs leading-relaxed">
+                  <code>{section.code}</code>
+                </pre>
+              )}
+              {section.resource && (
+                <a
+                  href={section.resource.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="btn btn-ghost btn-xs mt-4"
+                >
+                  Open {section.resource.label}
+                </a>
+              )}
+            </div>
+          </motion.details>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 export function LessonQuote({ text, label = 'Key takeaway' }) {
   if (!text) return null
   return (

@@ -4,7 +4,7 @@ import { motion } from 'motion/react'
 import confetti from 'canvas-confetti'
 import Button from '../components/ui/Button'
 import CodeBlock from '../components/ui/CodeBlock'
-import { StoryFlow, LessonQuote, LessonVisual } from '../components/lesson/LessonStory'
+import { StoryFlow, LessonQuote, LessonVisual, LessonDeepDive } from '../components/lesson/LessonStory'
 import { getLessonById } from '../data/mockCourses'
 import { getLessonContent } from '../data/lessonContent'
 import { useProgress } from '../hooks/useProgress'
@@ -83,6 +83,8 @@ export default function Lesson() {
               <p key={i} className="opacity-80 leading-relaxed mb-4">{p}</p>
             ))
           )}
+
+          <LessonDeepDive sections={content.deepDive} />
 
           <LessonQuote text={content.quote} label={content.quoteLabel} />
 

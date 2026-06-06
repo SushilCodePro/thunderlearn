@@ -25,27 +25,27 @@ export const courses = [
         ]
       },
       {
-        id: 'm2', title: 'Lecture 02 — Functions & Scope', completed: false,
+        id: 'm2', title: 'Lecture 02 — Data types in JavaScript', completed: false,
         lessons: [
-          { id: 'l11', title: 'Function Declarations', duration: '6 min', completed: false },
-          { id: 'l12', title: 'Arrow Functions', duration: '5 min', completed: false },
-          { id: 'l13', title: 'Scope & Closures', duration: '10 min', completed: false },
+          { id: 'l11', title: 'Variables: let, const & copy', duration: '7 min', completed: false },
+          { id: 'l12', title: 'Primitive Data Types', duration: '9 min', completed: false },
+          { id: 'l13', title: 'Objects, Arrays & Reference', duration: '10 min', completed: false },
         ]
       },
       {
-        id: 'm3', title: 'Lecture 03 — DOM & Events', completed: false,
+        id: 'm3', title: 'Lecture 03 — Operators and Data Type Behavior', completed: false,
         lessons: [
-          { id: 'l14', title: 'Selecting DOM Elements', duration: '7 min', completed: false },
-          { id: 'l15', title: 'DOM Manipulation', duration: '8 min', completed: false },
-          { id: 'l16', title: 'Event Listeners', duration: '9 min', completed: false },
+          { id: 'l14', title: 'Arithmetic & Assignment Operators', duration: '8 min', completed: false },
+          { id: 'l15', title: 'Comparison, Equality & Conversion', duration: '10 min', completed: false },
+          { id: 'l16', title: 'Logical, Bitwise & Precision', duration: '9 min', completed: false },
         ]
       },
       {
-        id: 'm4', title: 'Lecture 04 — Modern JS', completed: false,
+        id: 'm4', title: 'Lecture 04 — Loops, Number, Math and String', completed: false,
         lessons: [
-          { id: 'l17', title: 'ES6+ Features', duration: '10 min', completed: false },
-          { id: 'l18', title: 'Promises & Async/Await', duration: '12 min', completed: false },
-          { id: 'l19', title: 'Fetch API — Build a Mini App', duration: '15 min', completed: false },
+          { id: 'l17', title: 'Conditions and Loops', duration: '10 min', completed: false },
+          { id: 'l18', title: 'Number and Math Object', duration: '12 min', completed: false },
+          { id: 'l19', title: 'Strings and Functions', duration: '13 min', completed: false },
         ]
       }
     ]
@@ -148,18 +148,18 @@ export const curriculumDays = [
     completed: false,
   },
   {
-    day: 2, emoji: '⚙️', title: 'Functions & Scope', color: 'violet',
-    topics: ['Declarations', 'Arrow Functions', 'Scope', 'Closures'],
+    day: 2, emoji: '⚙️', title: 'Data Types', color: 'violet',
+    topics: ['let/const', 'Primitive values', 'Objects', 'typeof'],
     completed: false,
   },
   {
-    day: 3, emoji: '🌐', title: 'DOM & Events', color: 'emerald',
-    topics: ['querySelector', 'DOM Manipulation', 'Event Listeners', 'Forms'],
+    day: 3, emoji: '🌐', title: 'Operators', color: 'emerald',
+    topics: ['Arithmetic', 'Comparison', 'Conversion', 'Logical operators'],
     completed: false,
   },
   {
-    day: 4, emoji: '⚡', title: 'Modern JavaScript', color: 'amber',
-    topics: ['ES6+', 'Fetch API', 'Promises', 'Async/Await', 'Mini Project'],
+    day: 4, emoji: '⚡', title: 'Loops, Number and String', color: 'amber',
+    topics: ['if/else', 'for/while', 'Math.random', 'String methods'],
     completed: false,
   },
 ]
@@ -183,8 +183,16 @@ export const getLessonById = (lessonId) => {
     for (const module of course.modules ?? []) {
       const lesson = module.lessons?.find((l) => l.id === lessonId)
       if (lesson) {
-        const allLessons = getAllLessons()
-        const index = allLessons.findIndex((l) => l.id === lessonId)
+        const courseLessons = course.modules?.flatMap((m) =>
+          m.lessons?.map((l) => ({
+            ...l,
+            courseId: course.id,
+            courseTitle: course.title,
+            moduleId: m.id,
+            moduleTitle: m.title,
+          })) ?? []
+        ) ?? []
+        const index = courseLessons.findIndex((l) => l.id === lessonId)
         return {
           ...lesson,
           courseId: course.id,
@@ -193,9 +201,9 @@ export const getLessonById = (lessonId) => {
           moduleId: module.id,
           moduleTitle: module.title,
           lessonNumber: index + 1,
-          totalLessons: allLessons.length,
-          prevLessonId: allLessons[index - 1]?.id ?? null,
-          nextLessonId: allLessons[index + 1]?.id ?? null,
+          totalLessons: courseLessons.length,
+          prevLessonId: courseLessons[index - 1]?.id ?? null,
+          nextLessonId: courseLessons[index + 1]?.id ?? null,
         }
       }
     }

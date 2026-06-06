@@ -110,7 +110,7 @@ export default function Quiz() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-black">Lecture 01 Quiz</h1>
+        <h1 className="text-2xl font-black">{course.title} Quiz</h1>
         <p className="text-sm opacity-60">{course.emoji} {course.title} · {quizQuestions.length} questions</p>
       </div>
 
