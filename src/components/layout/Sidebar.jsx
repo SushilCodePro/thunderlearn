@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router'
-import { LayoutDashboard, BookOpen, Puzzle, Zap, User, Flame } from 'lucide-react'
+import { LayoutDashboard, BookOpen, Puzzle, Zap, User, Flame, Rocket } from 'lucide-react'
 import { mockUser } from '../../data/mockUser'
 import XPBar from '../ui/XPBar'
 import { useProgress } from '../../hooks/useProgress'
@@ -7,6 +7,7 @@ import { useProgress } from '../../hooks/useProgress'
 const links = [
   { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { to: '/course/js-basics', label: 'My Courses', icon: BookOpen },
+  { to: '/project', label: 'Final Project', icon: Rocket, featured: true },
   { to: '/dashboard#concepts', label: 'Concepts', icon: Puzzle },
   { to: '/quiz/js-basics', label: 'Quiz', icon: Zap },
   { to: '/profile', label: 'Profile', icon: User },
@@ -31,18 +32,25 @@ export default function Sidebar() {
       <XPBar current={userStats.xp} max={mockUser.xpToNextLevel} className="mb-6" />
 
       <nav className="flex-1 space-y-1">
-        {links.map(({ to, label, icon: Icon }) => {
+        {links.map(({ to, label, icon: Icon, featured }) => {
           const active = location.pathname === to || location.pathname.startsWith(to.split('#')[0])
           return (
             <Link
               key={to}
               to={to}
               className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all ${
-                active ? 'bg-indigo-500/20 text-indigo-300 font-medium' : 'opacity-70 hover:bg-white/5 hover:opacity-100'
+                featured
+                  ? active
+                    ? 'bg-gradient-to-r from-indigo-500 to-cyan-500 text-white font-bold shadow-lg shadow-indigo-500/20'
+                    : 'bg-gradient-to-r from-indigo-500/20 to-cyan-500/15 border border-indigo-500/30 text-indigo-200 font-bold hover:from-indigo-500/30 hover:to-cyan-500/25'
+                  : active
+                    ? 'bg-indigo-500/20 text-indigo-300 font-medium'
+                    : 'opacity-70 hover:bg-white/5 hover:opacity-100'
               }`}
             >
               <Icon size={18} />
-              {label}
+              <span className="flex-1">{label}</span>
+              {/* {featured && <span className="badge badge-xs badge-primary">Judge</span>} */}
             </Link>
           )
         })}

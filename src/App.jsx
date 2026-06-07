@@ -6,7 +6,9 @@ import CourseDetail from './pages/CourseDetail'
 import Lesson from './pages/Lesson'
 import Quiz from './pages/Quiz'
 import Profile from './pages/Profile'
+import Project from './pages/Project'
 import DashboardLayout from './components/layout/DashboardLayout'
+import MiniProjects from  './pages/MiniProjects'
 
 function LandingWrapper() {
   const location = useLocation()
@@ -39,6 +41,8 @@ const router = createBrowserRouter([
       { path: '/course/:id', element: <CourseDetail /> },
       { path: '/lesson/:id', element: <Lesson /> },
       { path: '/quiz/:courseId', element: <Quiz /> },
+      // { path: '/project', element: <Project /> },
+      { path: '/project', element: <MiniProjects/> },
       { path: '/profile', element: <Profile /> },
     ],
   },
