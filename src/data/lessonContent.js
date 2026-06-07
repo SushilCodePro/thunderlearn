@@ -593,6 +593,17 @@ export const lessonContent = {
     ],
     deepDive: [
       {
+        title: 'The original problem: bytes need meaning',
+        summary: 'Data types exist because the same bits can mean different things.',
+        points: [
+          'Computer memory is only bytes: 0s and 1s.',
+          'The bit pattern 01001000 could mean the number 72, the character H, a memory address, or part of another value.',
+          'A data type tells the computer how many bytes to read and what operations make sense.',
+          'This connects directly to JavaScript: JS decides the type at runtime instead of forcing you to write it before the variable.',
+        ],
+        code: `// Same-looking memory can have different meanings\n// 01001000 -> number 72\n// 01001000 -> character "H"\n// Type gives the bits meaning.`,
+      },
+      {
         title: 'let can be reassigned',
         summary: 'Use let when the same variable name must receive a new value.',
         points: [
@@ -611,6 +622,29 @@ export const lessonContent = {
           'Use const by default when a variable should not be reassigned.',
         ],
         code: `const score = 10;\n// score = 7; // TypeError`,
+      },
+      {
+        title: 'var: the old variable style',
+        summary: 'Know it because older code uses it; avoid it in modern beginner code.',
+        points: [
+          'var is function-scoped, not block-scoped, so it can leak outside if blocks.',
+          'var can be redeclared in the same scope, which makes bugs easier to hide.',
+          'var is hoisted and initialized as undefined, so reading it before the line appears does not throw.',
+          'Modern practice: use const by default, use let when reassignment is needed, avoid var.',
+        ],
+        code: `if (true) {\n  var leak = "visible outside";\n}\nconsole.log(leak); // visible outside\n\nvar x = 10;\nvar x = 20; // allowed`,
+      },
+      {
+        title: 'var vs let vs const: the decision table',
+        summary: 'This is the lecture summary learners should remember.',
+        points: [
+          'Scope: var is function-scoped; let and const are block-scoped.',
+          'Reassignment: var and let allow it; const does not.',
+          'Redeclaration: var allows it; let and const do not in the same scope.',
+          'Hoisting: var becomes undefined early; let and const stay in the Temporal Dead Zone until declared.',
+          'Default habit: const first, let second, var only when reading old code.',
+        ],
+        code: `// Best habit\nconst course = "JavaScript";\nlet score = 0;\nscore += 10;\n\n// Avoid in new code\nvar oldStyle = true;`,
       },
       {
         title: 'Open the uploaded lecture',
@@ -635,6 +669,17 @@ export const lessonContent = {
       'The uploaded lecture walks through each primitive type with console examples so you can see what JavaScript prints.',
     ],
     deepDive: [
+      {
+        title: 'Primitive values are immutable',
+        summary: 'Operations create new values instead of changing the old primitive.',
+        points: [
+          'A primitive value is stored directly in the variable.',
+          'When you appear to change a string or number, JavaScript creates a new primitive value.',
+          'That is why copying primitives feels simple: the value is copied, not shared.',
+          'This prepares the learner for the next lesson, where objects behave very differently.',
+        ],
+        code: `let name = "Rohit";\nlet copy = name;\ncopy = "Mohan";\nconsole.log(name); // Rohit`,
+      },
       {
         title: 'Number, string and boolean',
         summary: 'The three everyday primitives you will use constantly.',
@@ -664,6 +709,17 @@ export const lessonContent = {
           'Two Symbol("Rohit") values are not equal because each symbol is unique.',
         ],
         code: `let huge = 27343285947319574913n;\nlet a = Symbol("Rohit");\nlet b = Symbol("Rohit");\nconsole.log(a === b); // false`,
+      },
+      {
+        title: 'typeof: checking type at runtime',
+        summary: 'JavaScript figures out types while the program runs.',
+        points: [
+          'typeof returns a string such as "number", "string", "boolean", or "undefined".',
+          'typeof [] returns "object" because arrays are specialized objects.',
+          'typeof function(){} returns "function", a special case for callable objects.',
+          'typeof null returns "object", which is a famous old JavaScript bug.',
+        ],
+        code: `console.log(typeof "Hello");      // string\nconsole.log(typeof 42);           // number\nconsole.log(typeof [1, 2, 3]);    // object\nconsole.log(typeof function(){}); // function\nconsole.log(typeof null);         // object`,
       },
     ],
     code: `let firstNumber = 20;\nlet secondNumber = 20.7;\nlet firstString = "Rohit Negi";\nlet firstBoolean = true;\nlet empty = null;\n\nconsole.log(typeof firstNumber, typeof firstString, typeof firstBoolean, empty);`,
@@ -709,6 +765,28 @@ export const lessonContent = {
         ],
         code: `let obj1 = { name: "Rohit", age: 10 };\nlet obj2 = obj1;\nobj2.name = "Mohan";\nconsole.log(obj1.name); // Mohan`,
       },
+      {
+        title: 'Functions are objects too',
+        summary: 'In JavaScript, functions are callable values with object behavior.',
+        points: [
+          'A function can be stored in a variable.',
+          'A function can be passed to another function.',
+          'A function can be returned from another function.',
+          'This is why JavaScript later becomes powerful for callbacks, events, and React-style code.',
+        ],
+        code: `const greet = function () {\n  console.log("Hello");\n};\n\nconsole.log(typeof greet); // function`,
+      },
+      {
+        title: 'Other built-in object types',
+        summary: 'Object is the broad family; arrays are only one member.',
+        points: [
+          'Date represents dates and times.',
+          'RegExp represents regular expressions for text matching.',
+          'Map and Set store collections with different rules than plain objects and arrays.',
+          'The important connection: non-primitives are usually reference-based values.',
+        ],
+        code: `const today = new Date();\nconst uniqueIds = new Set([1, 2, 2, 3]);\nconsole.log(uniqueIds.size); // 3`,
+      },
     ],
     code: `let a = {\n  name: "Rohit",\n  age: 20,\n};\n\nconsole.log(typeof a); // object`,
     playground: `const obj1 = { name: "Rohit", age: 20 };\nconst obj2 = obj1;\nobj2.name = "Mohan";\nconsole.log(obj1.name);\nconsole.log(obj1 === obj2);`,
@@ -752,6 +830,27 @@ export const lessonContent = {
           'Prefer clearer code when teaching or debugging.',
         ],
         code: `let a = 10;\nconsole.log(a++); // 10\nconsole.log(a);   // 11\nconsole.log(++a); // 12`,
+      },
+      {
+        title: 'Operator precedence',
+        summary: 'JavaScript does multiplication before addition unless you use parentheses.',
+        points: [
+          '2 + 3 * 5 is 17, not 25, because multiplication has higher precedence.',
+          'Parentheses make the intended order explicit.',
+          'The lecture advice is simple: do not memorize the full table; use parentheses when there is any doubt.',
+        ],
+        code: `console.log(2 + 3 * 5);     // 17\nconsole.log((2 + 3) * 5);   // 25\n\nlet clear = ((10 * 2) + 5) * 64 + 78 / 2;`,
+      },
+      {
+        title: 'The connection to real programs',
+        summary: 'Operators are not isolated symbols; they drive state changes.',
+        points: [
+          'Arithmetic computes values.',
+          'Assignment stores the new value.',
+          'Increment updates counters.',
+          'Comparison and logical operators decide which branch runs next.',
+        ],
+        code: `let xp = 0;\nxp += 10;\nconst leveledUp = xp >= 10;\nconsole.log(leveledUp); // true`,
       },
     ],
     code: `let a = 10;\nlet b = 20;\n\na += b;\nconsole.log(a); // 30`,
@@ -798,6 +897,26 @@ export const lessonContent = {
         code: `let first = Number("10");\nlet second = Number("20");\nconsole.log(first + second); // 30`,
         resource: { label: 'Lecture 03 PDF', href: '/Lecture03_%20Operator%20and%20Data%20type%20in%20JS%20_%20Notion.pdf' },
       },
+      {
+        title: 'null and undefined comparison trap',
+        summary: 'Loose equality has special cases that beginners should see once.',
+        points: [
+          'null == undefined is true, but null is not loosely equal to 0, false, or 1.',
+          'Comparison operators like >= convert null differently, so null >= 0 can be true.',
+          'This is why strict equality and explicit checks are cleaner for learners.',
+        ],
+        code: `console.log(null == undefined); // true\nconsole.log(null == 0);         // false\nconsole.log(null >= 0);         // true\nconsole.log(null === undefined);// false`,
+      },
+      {
+        title: 'Ternary operator',
+        summary: 'A compact if/else expression for simple decisions.',
+        points: [
+          'The ternary operator has three parts: condition, value if true, value if false.',
+          'Use it for small expressions, not large blocks of logic.',
+          'It connects comparison operators to actual messages or values.',
+        ],
+        code: `let age = 20;\nlet message = age >= 18 ? "You can vote." : "You cannot vote yet.";\nconsole.log(message);`,
+      },
     ],
     code: `console.log("10" == 10);  // true\nconsole.log("10" === 10); // false\n\nlet age = Number("10");\nconsole.log(age);`,
     playground: `const formValue = "20";\nconsole.log(formValue + 10);\nconsole.log(Number(formValue) + 10);`,
@@ -841,6 +960,37 @@ export const lessonContent = {
           'For Bitcoin-like systems, store the smallest unit instead of decimal BTC.',
         ],
         code: `console.log(0.1 + 0.2);\n\nlet first = 12001; // paise\nlet second = 13002; // paise\nconsole.log((first + second) / 100);`,
+      },
+      {
+        title: 'Truthy and falsy values',
+        summary: 'Logical operators do not only work with true and false.',
+        points: [
+          'Falsy values: false, 0, empty string, null, undefined, and NaN.',
+          'Everything else is truthy, including "false", [], and {}.',
+          'This explains why username || "Guest" can choose a fallback display name.',
+        ],
+        code: `let username = "";\nlet displayName = username || "Guest";\nconsole.log(displayName); // Guest\n\nconsole.log(Boolean([])); // true\nconsole.log(Boolean({})); // true`,
+      },
+      {
+        title: 'Short-circuiting prevents errors',
+        summary: '&& and || can stop before evaluating the right side.',
+        points: [
+          'With &&, if the left side is falsy, JavaScript does not evaluate the right side.',
+          'This lets code safely check an object before reading a property.',
+          'With ||, if the left side is truthy, JavaScript does not evaluate the fallback.',
+        ],
+        code: `let user = null;\n\nif (user && user.name === "Admin") {\n  console.log("Admin");\n}\n\nlet display = user?.name || "Guest";`,
+      },
+      {
+        title: 'Binary storage is why decimals surprise us',
+        summary: '0.1 and 0.2 cannot be stored perfectly in base 2.',
+        points: [
+          'Humans write decimal fractions in base 10.',
+          'Computers store JavaScript numbers as binary floating-point values.',
+          'Some decimal fractions become repeating binary fractions, so JavaScript stores an approximation.',
+          'The result is the famous 0.1 + 0.2 output.',
+        ],
+        code: `console.log(0.1 + 0.2);        // 0.30000000000000004\nconsole.log(0.1 + 0.2 === 0.3); // false`,
       },
     ],
     code: `console.log(true && "Rohit");\nconsole.log(false || false);\nconsole.log(0.1 + 0.2);`,
@@ -887,6 +1037,37 @@ export const lessonContent = {
         code: `for (let i = 1; i <= 10; i++) {\n  console.log(i);\n}\n\nlet i = 1;\nwhile (i <= 10) {\n  console.log(i);\n  i++;\n}`,
         resource: { label: 'Lecture 04 PDF', href: '/Lecture04_%20Loop,%20Number,%20math%20and%20String%20_%20Notion.pdf' },
       },
+      {
+        title: 'if: one condition, one possible action',
+        summary: 'The if block runs only when the condition is true.',
+        points: [
+          'Use if when there is a single question to ask.',
+          'If the answer is false, JavaScript simply skips the block.',
+          'This is the starting shape for all branching logic.',
+        ],
+        code: `let temperature = 30;\n\nif (temperature > 25) {\n  console.log("It's a hot day! Wear shorts.");\n}`,
+      },
+      {
+        title: 'else-if chain: first true branch wins',
+        summary: 'Order matters because the rest of the chain is skipped.',
+        points: [
+          'JavaScript checks conditions from top to bottom.',
+          'The first true condition runs.',
+          'After that, the remaining else-if and else blocks are ignored.',
+          'This is why grading logic must be ordered from highest score to lowest score.',
+        ],
+        code: `let score = 85;\nlet grade;\n\nif (score >= 90) grade = "A";\nelse if (score >= 80) grade = "B";\nelse if (score >= 70) grade = "C";\nelse grade = "F";\n\nconsole.log(grade); // B`,
+      },
+      {
+        title: 'Infinite loop danger',
+        summary: 'A while loop must change something that moves it toward stopping.',
+        points: [
+          'while loops are useful when you do not know the exact number of repetitions ahead of time.',
+          'The update often happens inside the loop body.',
+          'If the condition never becomes false, the program gets stuck.',
+        ],
+        code: `let playerHealth = 10;\n\nwhile (playerHealth > 0) {\n  console.log("Health:", playerHealth);\n  playerHealth -= 3;\n}\nconsole.log("Player defeated");`,
+      },
     ],
     code: `for (let i = 1; i <= 10; i++) {\n  console.log(i);\n}`,
     playground: `let output = [];\nfor (let i = 1; i <= 5; i++) {\n  output.push(i);\n}\nconsole.log(output.join(", "));`,
@@ -901,6 +1082,26 @@ export const lessonContent = {
       'The uploaded Lecture 04 code includes OTP-style random number generation and range formulas.',
     ],
     deepDive: [
+      {
+        title: 'One unified number type',
+        summary: 'JavaScript uses number for both integers and decimals.',
+        points: [
+          'There is no separate int and float type in normal JavaScript numbers.',
+          'Both whole numbers and decimals report typeof value as "number".',
+          'Under the hood, numbers use 64-bit double-precision floating point from the IEEE 754 standard.',
+        ],
+        code: `let integer = 100;\nlet float = 99.5;\nconsole.log(typeof integer); // number\nconsole.log(typeof float);   // number`,
+      },
+      {
+        title: 'Creating numbers in different forms',
+        summary: 'JavaScript supports standard, exponential, hex, binary, and octal notation.',
+        points: [
+          'Standard literals are the normal numbers you write every day.',
+          'Exponential notation is useful for very large or very small numbers.',
+          'Hex, binary, and octal literals let you write numbers in other bases.',
+        ],
+        code: `let billion = 1e9;\nlet tiny = 5e-6;\nlet hex = 0xFF;     // 255\nlet binary = 0b1010; // 10\nlet octal = 0o77;    // 63`,
+      },
       {
         title: 'Number formatting',
         summary: 'toFixed and toPrecision control display, not deep math truth.',
@@ -930,6 +1131,28 @@ export const lessonContent = {
           'For a four digit OTP, be careful whether 0000 should be possible or whether 1000-9999 is enough.',
         ],
         code: `const min = 37;\nconst max = 48;\nconsole.log(Math.floor(Math.random() * (max - min + 1) + min));`,
+      },
+      {
+        title: 'Special numeric values',
+        summary: 'Infinity, -Infinity, and NaN are all number values.',
+        points: [
+          '1 / 0 produces Infinity.',
+          '-1 / 0 produces -Infinity.',
+          'Invalid math such as "hello" / 2 produces NaN.',
+          'NaN is the only JavaScript value that is not equal to itself.',
+        ],
+        code: `console.log(1 / 0);          // Infinity\nconsole.log("hello" / 2);    // NaN\nconsole.log(typeof NaN);     // number\nconsole.log(NaN === NaN);    // false`,
+      },
+      {
+        title: 'Number constants and safe integers',
+        summary: 'The Number object exposes the limits of the number type.',
+        points: [
+          'Number.MAX_VALUE is the largest representable positive number.',
+          'Number.MAX_SAFE_INTEGER is the largest integer you can safely represent exactly.',
+          'Number.EPSILON helps compare floating-point results that are close enough.',
+          'When integer precision beyond the safe limit matters, BigInt becomes relevant.',
+        ],
+        code: `console.log(Number.MAX_SAFE_INTEGER);\nconsole.log(Number.MIN_SAFE_INTEGER);\n\nconst closeEnough = Math.abs((0.1 + 0.2) - 0.3) < Number.EPSILON;\nconsole.log(closeEnough); // true`,
       },
     ],
     code: `let num = 10.39148342;\nconsole.log(num.toPrecision(5));\n\nconsole.log(Math.floor(Math.random() * (9999 - 1000) + 1000));`,
@@ -965,6 +1188,37 @@ export const lessonContent = {
           'includes checks whether a substring exists.',
         ],
         code: `let str = "Rohit Negi is a bad teacher Negi is";\nconsole.log(str.replaceAll("Negi", "maggi"));\nconsole.log("   Rohit Negi ".trim());\nconsole.log("Amir Rohit Anuj Anjali".split(" "));`,
+      },
+      {
+        title: 'slice vs substring',
+        summary: 'Both cut strings, but negative indexes behave differently.',
+        points: [
+          'slice(start, end) can use negative indexes to count from the end.',
+          'substring(start, end) treats negative values like 0.',
+          'This is why slice is often clearer when you need characters from the end.',
+        ],
+        code: `let str = "Hello Ji";\nconsole.log(str.slice(-2));      // Ji\nconsole.log(str.substring(-2));  // Hello Ji`,
+      },
+      {
+        title: 'Searching inside strings',
+        summary: 'Use includes, indexOf, and lastIndexOf to locate text.',
+        points: [
+          'includes returns true or false.',
+          'indexOf returns the first position, or -1 if not found.',
+          'lastIndexOf starts from the end and finds the last occurrence.',
+          'These methods are useful for validation, search boxes, and parsing simple text.',
+        ],
+        code: `let str = "Rohit Negi is a teacher Negi is";\nconsole.log(str.includes("Negi"));      // true\nconsole.log(str.indexOf("Negi"));       // 6\nconsole.log(str.lastIndexOf("Negi"));   // 24`,
+      },
+      {
+        title: 'Looping through a string',
+        summary: 'A string is character data, so indexes and loops work together.',
+        points: [
+          'str.length tells you how many characters exist.',
+          'str[i] reads the character at position i.',
+          'This connects the string lesson back to loops from the same lecture.',
+        ],
+        code: `let str = "Hello Ji";\n\nfor (let i = 0; i < str.length; i++) {\n  console.log(str[i]);\n}`,
       },
       {
         title: 'Functions return answers',

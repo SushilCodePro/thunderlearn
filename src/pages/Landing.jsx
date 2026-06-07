@@ -34,7 +34,7 @@ const whyJS = [
 const testimonials = [
   { name: 'Rohit Negi', role: 'Tech lead', seed: 'rohit', quote: 'ThunderLearn made JS click for me. The streak system kept me coming back every day!' },
   { name: 'Aditya Tandan.', role: 'Tech lead', seed: 'adi', quote: 'Better than any YouTube tutorial. The lessons are short, focused, and actually build on each other.' },
-  { name: 'Sneha K.', role: 'Career Switcher', seed: 'sneha', quote: 'I went from zero to building a fetch API mini app in 4 days. This platform is incredible.' },
+  { name: 'Jit G.', role: 'Career Switcher', seed: 'jit', quote: 'I went from zero to building a fetch API mini app in 4 days. This platform is incredible.' },
 ]
 
 function CountUp({ target, suffix = '' }) {
